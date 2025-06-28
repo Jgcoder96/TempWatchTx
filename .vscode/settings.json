@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    "temperaturesensor.h": "c",
+    "esp_log.h": "c"
+  }
+}
