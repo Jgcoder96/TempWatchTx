@@ -6,6 +6,7 @@
 #include "processData.h"
 #include "systemConfig.h"
 #include "temperatureSensor.h"
+#include "systemControl.h"
 
 extern QueueHandle_t sensor_queue;
 extern QueueHandle_t sensor_queue_30s;
@@ -72,6 +73,8 @@ void systemControl(void *pvParam) {
             ESP_LOGW("HTTP", "No se pudo enviar datos al servidor");
           }
         }
+        systemControlMotorAndLeds (&receivedData);
+        
       }  
     }
 }
@@ -90,6 +93,7 @@ void sendDataToApi(void *pvParam) {
             ESP_LOGW("HTTP", "No se pudo enviar datos al servidor");
           }
         }
+        
       }
     }
 }

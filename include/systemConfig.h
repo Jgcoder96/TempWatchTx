@@ -11,7 +11,6 @@ typedef enum {
   OFF,
   NORMAL_SPEED,
   HIGH_SPEED
-  
 } SpeedLevel;
 
 typedef struct {

@@ -5,6 +5,7 @@
 #include "analogDigitalConverter.h"
 #include "initializeSystem.h"
 #include "systemConfig.h"
+#include "motorSpeedControl.h"
 
 QueueHandle_t sensor_queue = NULL;
 QueueHandle_t sensor_queue_30s = NULL;
@@ -24,6 +25,10 @@ void app_main(void) {
   adcReaderInit();
 
   initializeSystem();
+
+  motores_init();
+
+  motores_start_control_task();
 
   sensor_queue = xQueueCreate(QUEUE_LENGTH, ITEM_SIZE);
   sensor_queue_30s = xQueueCreate(QUEUE_LENGTH, ITEM_SIZE);
