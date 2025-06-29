@@ -1,10 +1,11 @@
 #include "analogDigitalConverter.h"
+#include "httpClient.h"
 #include "library.h"
-#include "systemConfig.h"
-#include "temperatureSensor.h"
-#include "processData.h"
 #include "parseDataToJSON.h"
 #include "parsedDataToJSONWithSystemState.h"
+#include "processData.h"
+#include "systemConfig.h"
+#include "temperatureSensor.h"
 
 extern QueueHandle_t sensor_queue;
 extern QueueHandle_t sensor_queue_30s;
@@ -65,7 +66,11 @@ void systemControl(void *pvParam) {
       if (xQueueReceive(sensor_queue, &receivedData, pdMS_TO_TICKS(portMAX_DELAY)) == pdTRUE) {
         char* dataInJSONWithSystemState = parseDataToJSONWithSystemState(&receivedData);
         if (wifiConnected && dataInJSONWithSystemState != NULL) {
-          printf("%s\n", dataInJSONWithSystemState);
+          printf("Enviando datos al servidor: %s\n", dataInJSONWithSystemState);
+          esp_err_t err = sendJsonPost("http://192.168.18.221:3000/api/data", dataInJSONWithSystemState);
+          if (err != ESP_OK) {
+            ESP_LOGW("HTTP", "No se pudo enviar datos al servidor");
+          }
         }
       }  
     }
@@ -78,7 +83,13 @@ void sendDataToApi(void *pvParam) {
     while (1) {
       if (xQueueReceive(sensor_queue_30s, &receivedData, pdMS_TO_TICKS(portMAX_DELAY)) == pdTRUE) {
         char* dataInJSON = parseDataToJSON(&receivedData);
-        printf("%s\n", dataInJSON);
+        if (wifiConnected && dataInJSON != NULL) {
+          printf("Enviando datos al servidor: %s\n", dataInJSON);
+          esp_err_t err = sendJsonPost("http://192.168.18.221:3000/api/data", dataInJSON);
+          if (err != ESP_OK) {
+            ESP_LOGW("HTTP", "No se pudo enviar datos al servidor");
+          }
+        }
       }
     }
 }

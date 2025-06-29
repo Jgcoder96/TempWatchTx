@@ -21,11 +21,11 @@ static const char* speedLevelToString(SpeedLevel speed) {
 
 static cJSON* systemToJsonWithStatus(const SystemStruct* system) {
   cJSON* json_system = cJSON_CreateObject();
-  cJSON_AddStringToObject(json_system, "id_sensor", system->name);
+  cJSON_AddStringToObject(json_system, "id_sensor", system->id);
   cJSON_AddNumberToObject(json_system, "voltage", system->voltage);
   cJSON_AddNumberToObject(json_system, "temperature", system->temperature);
   cJSON_AddStringToObject(json_system, "status", systemStateToString(system->current_state));
-  cJSON_AddStringToObject(json_system, "speed_motor", speedLevelToString(system->speed_level));
+  cJSON_AddStringToObject(json_system, "motor_speed", speedLevelToString(system->speed_level));
   return json_system;
 }
 
