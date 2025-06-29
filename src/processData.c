@@ -10,7 +10,7 @@ double voltageToTemperature(double voltage) {
   return temp_min + (voltage / 3.0) * (temp_max - temp_min);
 }
 
-static void updateSingleSystemState(SystemStruct *system, const HysteresisConfig *hyst) {
+void updateSingleSystemState(SystemStruct *system, const HysteresisConfig *hyst) {
   system->previous_state = system->current_state;
 
   switch (system->current_state) {

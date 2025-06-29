@@ -5,5 +5,6 @@
 
 void senseTemperature(void *pvParam);
 void systemControl(void *pvParam);
+void sendDataToApi(void *pvParam);
 
 #endif 

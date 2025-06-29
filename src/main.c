@@ -7,6 +7,7 @@
 #include "systemConfig.h"
 
 QueueHandle_t sensor_queue = NULL;
+QueueHandle_t sensor_queue_30s = NULL;
 
 void app_main(void) {
     
@@ -25,7 +26,9 @@ void app_main(void) {
   initializeSystem();
 
   sensor_queue = xQueueCreate(QUEUE_LENGTH, ITEM_SIZE);
+  sensor_queue_30s = xQueueCreate(QUEUE_LENGTH, ITEM_SIZE);
 
-  xTaskCreatePinnedToCore(senseTemperature, "sensorTemp", 8192, NULL, 12, NULL, 1);
-  xTaskCreatePinnedToCore(systemControl, "controlTemp", 8192, NULL, 12, NULL, 1);
+  xTaskCreatePinnedToCore(senseTemperature, "senseTemperature", 8192, NULL, 12, NULL, 1);
+  xTaskCreatePinnedToCore(systemControl, "systemControl", 8192, NULL, 12, NULL, 1);
+  xTaskCreatePinnedToCore(sendDataToApi, "sendDataToApi", 8192, NULL, 12, NULL, 1);
 }
