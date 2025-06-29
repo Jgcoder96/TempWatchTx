@@ -3,6 +3,7 @@
 
 #include "systemConfig.h"
 
+double roundNumber(double value);
 double voltageToTemperature(double voltage);
 void updateSingleSystemState(SystemStruct *system, const HysteresisConfig *hyst);
 void updateSystemStatesWithHysteresis(SystemCollectionStruct *systems);

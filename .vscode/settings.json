@@ -3,6 +3,8 @@
     "temperaturesensor.h": "c",
     "esp_log.h": "c",
     "systemconfig.h": "c",
-    "analogdigitalconverter.h": "c"
+    "analogdigitalconverter.h": "c",
+    "processdata.h": "c",
+    "library.h": "c"
   }
 }

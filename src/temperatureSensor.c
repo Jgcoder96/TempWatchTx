@@ -3,6 +3,8 @@
 #include "systemConfig.h"
 #include "temperatureSensor.h"
 #include "processData.h"
+#include "parseDataToJSON.h"
+#include "parsedDataToJSONWithSystemState.h"
 
 extern QueueHandle_t sensor_queue;
 extern QueueHandle_t sensor_queue_30s;
@@ -28,15 +30,15 @@ void senseTemperature(void *pvParam) {
       sensorData.sensor3 = (SensorDataStruct){adc_results[0].voltage};
       sensorData.sensor4 = (SensorDataStruct){adc_results[1].voltage};
 
-      systemCollection.system1.voltage = sensorData.sensor1.voltage;
-      systemCollection.system2.voltage = sensorData.sensor2.voltage;
-      systemCollection.system3.voltage = sensorData.sensor3.voltage;
-      systemCollection.system4.voltage = sensorData.sensor4.voltage;
+      systemCollection.system1.voltage = roundNumber(sensorData.sensor1.voltage);
+      systemCollection.system2.voltage = roundNumber(sensorData.sensor2.voltage);
+      systemCollection.system3.voltage = roundNumber(sensorData.sensor3.voltage);
+      systemCollection.system4.voltage = roundNumber(sensorData.sensor4.voltage);
 
-      systemCollection.system1.temperature = voltageToTemperature(sensorData.sensor1.voltage);
-      systemCollection.system2.temperature = voltageToTemperature(sensorData.sensor2.voltage);
-      systemCollection.system3.temperature = voltageToTemperature(sensorData.sensor3.voltage);
-      systemCollection.system4.temperature = voltageToTemperature(sensorData.sensor4.voltage);
+      systemCollection.system1.temperature = roundNumber(voltageToTemperature(sensorData.sensor1.voltage));
+      systemCollection.system2.temperature = roundNumber(voltageToTemperature(sensorData.sensor2.voltage));
+      systemCollection.system3.temperature = roundNumber(voltageToTemperature(sensorData.sensor3.voltage));
+      systemCollection.system4.temperature = roundNumber(voltageToTemperature(sensorData.sensor4.voltage));
 
       updateSystemStatesWithHysteresis(&systemCollection);
 
@@ -61,11 +63,10 @@ void systemControl(void *pvParam) {
   
     while (1) {
       if (xQueueReceive(sensor_queue, &receivedData, pdMS_TO_TICKS(portMAX_DELAY)) == pdTRUE) {
-        printf("Sensor 1: %.2f V\n", receivedData.system1.temperature);
-        printf("Estado Anterior: %d\n", receivedData.system1.previous_state);
-        printf("Estado Actual: %d\n", receivedData.system1.current_state);
-        printf("Estado Motor: %d\n", receivedData.system1.speed_level);
-        
+        char* dataInJSONWithSystemState = parseDataToJSONWithSystemState(&receivedData);
+        if (wifiConnected && dataInJSONWithSystemState != NULL) {
+          printf("%s\n", dataInJSONWithSystemState);
+        }
       }  
     }
 }
@@ -76,7 +77,8 @@ void sendDataToApi(void *pvParam) {
   
     while (1) {
       if (xQueueReceive(sensor_queue_30s, &receivedData, pdMS_TO_TICKS(portMAX_DELAY)) == pdTRUE) {
-        printf("holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");   
+        char* dataInJSON = parseDataToJSON(&receivedData);
+        printf("%s\n", dataInJSON);
       }
     }
 }

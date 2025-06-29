@@ -1,5 +1,10 @@
 #include "processData.h"
 #include "systemConfig.h"
+#include "library.h"
+
+double roundNumber(double value) {
+  return round(value * 100) / 100;
+}
 
 double voltageToTemperature(double voltage) {
   double temp_min = 30.0;   
