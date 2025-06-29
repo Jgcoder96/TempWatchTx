@@ -1,6 +1,8 @@
 {
   "files.associations": {
     "temperaturesensor.h": "c",
-    "esp_log.h": "c"
+    "esp_log.h": "c",
+    "systemconfig.h": "c",
+    "analogdigitalconverter.h": "c"
   }
 }

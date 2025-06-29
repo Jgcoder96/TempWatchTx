@@ -1,5 +1,5 @@
-#ifndef ADC_READER_H
-#define ADC_READER_H
+#ifndef ANALOG_DIGITAL_CONVERTER_H
+#define ANALOG_DIGITAL_CONVERTER_H
 
 #include <stdint.h>
 
