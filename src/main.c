@@ -6,6 +6,7 @@
 #include "initializeSystem.h"
 #include "systemConfig.h"
 #include "motorSpeedControl.h"
+#include "updateLeds.h"
 
 QueueHandle_t sensor_queue = NULL;
 QueueHandle_t sensor_queue_30s = NULL;
@@ -29,6 +30,10 @@ void app_main(void) {
   motores_init();
 
   motores_start_control_task();
+
+  shift_register_init();
+
+  shift_out_string_16("0100100001001000");
 
   sensor_queue = xQueueCreate(QUEUE_LENGTH, ITEM_SIZE);
   sensor_queue_30s = xQueueCreate(QUEUE_LENGTH, ITEM_SIZE);

@@ -48,7 +48,7 @@ static float read_single_channel(adc1_channel_t channel, uint32_t *raw_value) {
     ESP_LOGW(TAG, "Calibración no disponible. El voltaje será 0.");
   }
   
-  uint8_t channel_idx = channel - ADC1_CHANNEL_4; // Convierte a índice 0-3
+  uint8_t channel_idx = channel - ADC1_CHANNEL_4; 
   return (voltage > adc_current_offsets[channel_idx]) 
             ? (voltage - adc_current_offsets[channel_idx]) 
             : 0.0f;

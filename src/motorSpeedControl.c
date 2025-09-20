@@ -28,7 +28,7 @@ volatile SpeedLevel g_velocidad_motor_3 = OFF;
 volatile SpeedLevel g_velocidad_motor_4 = OFF;
 
 static motor_config_t motores[] = {
-  { .gpio_num = 26, .channel = LEDC_CHANNEL_0, .p_velocidad = &g_velocidad_motor_1 }, 
+  { .gpio_num = 25, .channel = LEDC_CHANNEL_0, .p_velocidad = &g_velocidad_motor_1 }, 
   { .gpio_num = 27, .channel = LEDC_CHANNEL_1, .p_velocidad = &g_velocidad_motor_2 }, 
   { .gpio_num = 14, .channel = LEDC_CHANNEL_2, .p_velocidad = &g_velocidad_motor_3 }, 
   { .gpio_num = 13, .channel = LEDC_CHANNEL_3, .p_velocidad = &g_velocidad_motor_4 }  
